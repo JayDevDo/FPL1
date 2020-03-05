@@ -1,0 +1,109 @@
+<html>
+  <head>
+	<title>Jay's FPL team schedules</title>
+	<meta   charset="utf-8">
+	<meta   name="viewport"
+			content="width=device-width, initial-scale=1.0"
+	>
+	<link   rel="stylesheet"
+			type="text/css"
+			href="fpl.css"
+	>
+	<link   rel="stylesheet"
+			type="text/css"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+	>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  </head>
+  <body>
+	<button onclick="getAllTeams(38)" disabled>Get all games</button>
+	<button onclick="getAllTeams(3)"  disabled>Get next 3 games</button>
+	<button onclick="getAllTeams(5)"  disabled>Get next 5 games</button>
+	<button onclick="getAllTeams(8)"  disabled>Get next 8 games</button>
+	<button onclick="getAllTeams(10)" disabled>Get next 10 games</button>
+	
+	<div id="mdl_gameTeamStats" class="notModal">
+		<div class="tmStatBox">
+			<span>Selected</span>
+			<div class="playerListS"></div>
+		</div>
+		<div class="tmStatBox">
+			<span>Opponent</span>
+			<div class="playerListO"></div>
+		</div>
+	</div>
+
+	<table id="tbl">
+		<thead>
+			<tr>
+				<th>Team</th>
+				<th title="Difficulty according to FPL ranking (2,3,4 or 5)">Diff Coef.</th>
+				<th>Rnd 01</th>
+				<th>Rnd 02</th>
+				<th>Rnd 03</th>
+				<th>Rnd 04</th>
+				<th>Rnd 05</th>
+				<th>Rnd 06</th>
+				<th>Rnd 07</th>
+				<th>Rnd 08</th>
+				<th>Rnd 09</th>
+				<th>Rnd 10</th>
+				<th>Rnd 11</th>
+				<th>Rnd 12</th>
+				<th>Rnd 13</th>
+				<th>Rnd 14</th>
+				<th>Rnd 15</th>
+				<th>Rnd 16</th>
+				<th>Rnd 17</th>
+				<th>Rnd 18</th>
+				<th>Rnd 19</th>
+				<th>Rnd 20</th>
+				<th>Rnd 21</th>
+				<th>Rnd 22</th>
+				<th>Rnd 23</th>
+				<th>Rnd 24</th>
+				<th>Rnd 25</th>
+				<th>Rnd 26</th>
+				<th>Rnd 27</th>
+				<th>Rnd 28</th>
+				<th>Rnd 29</th>
+				<th>Rnd 30</th>
+				<th>Rnd 31</th>
+				<th>Rnd 32</th>
+				<th>Rnd 33</th>
+				<th>Rnd 34</th>
+				<th>Rnd 35</th>
+				<th>Rnd 36</th>
+				<th>Rnd 37</th>
+				<th>Rnd 38</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr id="ARS" tmId="1"><th>Arsenal</th></tr>
+			<tr id="AVL" tmId="2"><th>Aston Villa</th></tr>
+			<tr id="BOU" tmId="3"><th>Bournemouth</th></tr>
+			<tr id="BHA" tmId="4"><th>Brighton</th></tr>
+			<tr id="BUR" tmId="5"><th>Burnley</th></tr>
+			<tr id="CHE" tmId="6"><th>Chelsea</th></tr>
+			<tr id="CRY" tmId="7"><th>Crystal Plc</th></tr>
+			<tr id="EVE" tmId="8"><th>Everton</th></tr>
+			<tr id="LEI" tmId="9"><th>Leicester</th></tr>
+			<tr id="LIV" tmId="10"><th>Liverpool</th></tr>
+			<tr id="MNC" tmId="11"><th>Man City</th></tr>
+			<tr id="MUN" tmId="12"><th>Man Utd</th></tr>
+			<tr id="NEW" tmId="13"><th>Newcastle</th></tr>
+			<tr id="NOR" tmId="14"><th>Norwich</th></tr>
+			<tr id="SHU" tmId="15"><th>Sheffield Utd</th></tr>
+			<tr id="SOU" tmId="16"><th>Southampton</th></tr>
+			<tr id="TOT" tmId="17"><th>Spurs</th></tr>
+			<tr id="WAT" tmId="18"><th>Watford</th></tr>
+			<tr id="WHU" tmId="19"><th>West Ham</th></tr>
+			<tr id="WOL" tmId="20"><th>Wolves</th></tr>
+		</tbody>
+	</table>
+
+	<script src="getMatchInfo.js"></script>
+
+ </body>
+ </html>

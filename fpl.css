@@ -1,0 +1,101 @@
+body{
+
+    background-color: black;
+    color: bisque;
+}
+
+table{
+    text-align: center;
+}
+
+th:nth-of-type(odd){
+    background-color: #cc0058; 
+}
+
+
+th:nth-of-type(even){
+    background-color: #acddff;
+    color: #000000;
+}
+
+td{
+    color: #000000;
+}
+
+tr>td:first-of-type{
+    color: #ebebe4;
+}
+tr>td:nth-of-type(2){
+    color: #ebebe4;
+}
+
+td[df="2"]{
+    background-color: #00ff86;
+}
+
+td[df="3"]{
+    background-color: #ebebe4;
+}
+
+td[df="4"]{
+    background-color: #ff005a;
+}
+
+td[df="5"]{
+    background-color: #861d46;
+}
+
+td[plyd="true"]{
+    background-color: #000000 !important;
+    color: #585858 !important;
+}
+
+td[inSel="false"]{
+    background-color: #494936 !important;
+    color: #585858 !important;
+}
+
+.curRound{
+    color: #ffff00 !important;
+}
+
+.tchide{
+   display: none;
+}
+
+.clmnHide{
+    display: none;
+}
+
+.postponed{
+    background-color: #ffff00 !important;
+}
+
+.postponed::after {
+    content: " postponed (League cup)";
+}
+
+.played{
+    background-color: #a2a2a2 !important;
+    color: #000000 !important;
+}
+
+
+#mdl_gameTeamStats{
+    z-index: 9999;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 60%;
+    max-height: 80%;
+    overflow: scroll;
+}
+
+.modal{
+    display: flex;
+    flex-direction: row;
+}
+
+.notModal{
+    display: none;
+}
