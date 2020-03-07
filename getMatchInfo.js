@@ -13,8 +13,11 @@ const json_string = 'https://fantasy.premierleague.com/api/fixtures/?event>0';
 /* CORS workaround to avoid cross origin header blockage */
 const cors_api_url = 'https://cors-anywhere.herokuapp.com/';
 
-/* rndsPlayed  will be changed once FPL data is loaded */
-let rndsPlayed = 0;
+/* 
+    rndsPlayed  will be changed once FPL data is loaded 
+    Due to changes in the calendar the eventround is now set manually
+*/
+let rndsPlayed = 28;
 
 /*  Array to store the event data from FPL */
 let FPLData = [];
@@ -29,17 +32,37 @@ function loadDoc() {
         if (this.readyState == 4 && this.status == 200) {
             arrB4Sort = JSON.parse(this.responseText);
 
-            /* 
-            // 2020-01-29 Man C vs Villa in League cup final 2020-03-01
-            // Man C v Arsenal and Villa v Bournemouth were to play rnd 28
-            */
-            if( ( arrB4Sort[0].id === 271 ) || ( arrB4Sort[0].id === 275 ) ){ 
-                console.log( "arrB4Sort[0] event.eventid", arrB4Sort[0].id ) ;
-                arrB4Sort[0].event = 28;
-            }
-            if( ( arrB4Sort[1].id === 271 ) || ( arrB4Sort[1].id === 275 ) ){ 
-                console.log("arrB4Sort[1] event.eventid", arrB4Sort[1].id)
-                arrB4Sort[1].event = 28;
+            /* Adding team names to events */
+            for (let ev = 0; ev < arrB4Sort.length; ev++) {
+                arrB4Sort[ev].team_h_nm = FPLTeams[arrB4Sort[ev].team_h];
+                arrB4Sort[ev].team_a_nm = FPLTeams[arrB4Sort[ev].team_a];
+
+                let evId = arrB4Sort[ev].id; 
+                    if( evId == 337 ){
+                        //  337: MNC v NEW league cup reschedules
+                        arrB4Sort[ev].event = 34;   
+                    }else if( evId == 271 ) {
+                        // 271: AVL v SHU league cup reschedules
+                        arrB4Sort[ev].event = 38;   
+                    }else if( evId == 302 ) {
+                        // 302: CHE v MNC FA cup tie
+                        arrB4Sort[ev].event = 31;   
+                    }else if( evId == 303 ) {
+                        // 303: LEI v BHA FA cup tie
+                        arrB4Sort[ev].event = 31;   
+                    }else if( evId == 305 ) {
+                        // 305: MNU v SHE FA cup tie
+                        arrB4Sort[ev].event = 31;   
+                    }else if( evId == 306 ) {
+                        // 306: NEW v AVL FA cup tie
+                        arrB4Sort[ev].event = 31;   
+                    }else if( evId == 307 ) {
+                        // 307: NOR v EVE FA cup tie
+                        arrB4Sort[ev].event = 31;   
+                    }else if( evId == 308 ) {
+                        //  308: SOU v ARS FA cup tie                           
+                        arrB4Sort[ev].event = 31;                        
+                    }
             }
 
             FPLData = arrB4Sort.sort(
@@ -58,7 +81,7 @@ function loadDoc() {
 
             /* Determine which rounds have finished, which are still to play */
             
-            rndsPlayed = getNextRound();
+            // rndsPlayed = getNextRound();
         }
     };
 
@@ -71,7 +94,7 @@ loadDoc();
 function markCurrentRound(curRound){
     let tblHdr = $('#tbl thead tr th').toArray();
     for (let c = 0; c < 40; c++) {
-        if ( c === curRound ) { tblHdr[c].classList += "curRound"; }
+        if ( c == curRound ) { tblHdr[c].classList += "curRound"; }
     }
 }
 
@@ -86,21 +109,29 @@ function hideRoundsPlayed(curRound) {
 }
 
 function getNextRound() {
+
+    return rndsPlayed;
+
     /* determins which rounds have been played (or at least selection is closed) */
     // console.log( " FPLData.length", FPLData.length, "FPLData[r].finished", FPLData[0].finished );
-    let nrpRetVal = 1;
-    for(let r=38; r>0; r--){
-        let evtArr=[];
-        evtArr = fltrEventsByRound(r);
-        function fnIsFin(ev){ return !ev.finished ; }
-//        console.log("getnxtround check r", r, evtArr.filter(fnIsFin).length)
-        if( evtArr.filter(fnIsFin).length < 10 ){
-            nrpRetVal = r;
-            rndsPlayed = nrpRetVal;
-          //  console.log("nrpRetVal:", nrpRetVal)
-            return nrpRetVal; 
+
+    /* 
+        let nrpRetVal = 1;
+        for(let r=38; r>0; r--){
+            let evtArr=[];
+            evtArr = fltrEventsByRound(r);
+            function fnIsFin(ev){ return !ev.finished ; }
+            
+            // console.log("getnxtround check r", r, evtArr.filter(fnIsFin).length)
+            
+            if( evtArr.filter(fnIsFin).length < 10 ){
+                nrpRetVal = r;
+                rndsPlayed = nrpRetVal;
+                // console.log("nrpRetVal:", nrpRetVal)
+                return nrpRetVal; 
+            }
         }
-    }
+    */    
 }
 
 function getAllTeams(rndCnt) {
@@ -126,8 +157,6 @@ function getTeams(tmId, rnds) {
             
             /* Only count games not played and selected number of rounds by user */
         
-            if( event.event===null ){ event.event=28; }
-
             let rndSelected = ((event.event > rndsPlayed) && (event.event <= (rndsPlayed + rnds)));
 
             if (event.team_h == tmId) { /* selected team is playing at Home */
@@ -169,7 +198,7 @@ function getTeams(tmId, rnds) {
     jQuery.each(OppList, function (i, val) {
         let evntClassList = ["evtTeamBlock"];
     /* hide cell if round has been played */
-        if( ( val.eventId === 271 ) || ( val.eventId === 275 ) ){ evntClassList.push( "postponed" );  }
+        if( ( val.eventId in [ 271,303,337,305,306,307,308 ] ) ){ evntClassList.push( "postponed" );  }
         if( val.plyd ) { evntClassList.push( "played" ); } 
         if( !val.inSel ) { evntClassList.push( "tchide" ); } 
         $(
@@ -205,9 +234,8 @@ function getTeams(tmId, rnds) {
 
 let eventRndFltrVal = 1;
 
-function rndFltrFnc(arrVal) { 
-    return ( parseInt(arrVal.event) === eventRndFltrVal ); 
-}
+function rndFltrFnc(arrVal) { return ( parseInt(arrVal.event) === eventRndFltrVal ); }
+function pstpndRndFltrFnc(arrVal) { return ( arrVal.event === 0 ); }
 
 function fltrEventsByRound(EvtRnd){ 
     eventRndFltrVal = EvtRnd;
@@ -216,6 +244,18 @@ function fltrEventsByRound(EvtRnd){
     return retEvtsArr ;
 }
 
+function showRoundCount(startRound){ 
+    if( !startRound ){ startRound = getNextRound(); }
+
+    for(let i=startRound; i<39; i++){ 
+        let a= fltrEventsByRound(i); 
+        console.log("round", i, a.length )
+    }
+
+    let b = FPLData.filter(pstpndRndFltrFnc) ;
+    console.log("not planned", b.length )
+
+}
 
 /* 
     This will return the events array filtered by the team id from parameters
