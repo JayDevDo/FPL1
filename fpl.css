@@ -72,7 +72,7 @@ td[inSel="false"]{
 }
 
 .postponed::after {
-    content: " postponed (League cup)";
+    content: " postponed";
 }
 
 .played{
