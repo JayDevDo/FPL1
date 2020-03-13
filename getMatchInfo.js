@@ -4,8 +4,18 @@
     1: to be in sync with FPL teamIds (start with Arsenal = 1) 
     2: to be in sync with table rows.
 */
-const FPLTeams = ["Team", "ARS", "AVL", "BOU", "BHA", "BUR", "CHE", 'CRY', "EVE",
-    "LEI", "LIV", "MNC", "MUN", "NEW", "NOR", "SHU", "SOU", "TOT", "WAT", "WHU", "WOL"];
+const FPLTeams = [  "Team", 
+                    "ARS", "AVL",
+                    "BOU", "BHA", 
+                    "BUR", "CHE", 
+                    "CRY", "EVE",
+                    "LEI", "LIV", 
+                    "MNC", "MUN", 
+                    "NEW", "NOR", 
+                    "SHU", "SOU", 
+                    "TOT", "WAT", 
+                    "WHU", "WOL"
+                ];
 
 /* url from FPL with data */
 const json_string = 'https://fantasy.premierleague.com/api/fixtures/?event>0';
@@ -17,7 +27,21 @@ const cors_api_url = 'https://cors-anywhere.herokuapp.com/';
     rndsPlayed  will be changed once FPL data is loaded 
     Due to changes in the calendar the eventround is now set manually
 */
-let rndsPlayed = 28;
+let rndsPlayed  = 29;
+
+let ppEevents   =   [
+                        {"id": 271, "oldRnd": 28, "newRnd": 38 }, // 1 
+                        {"id": 275, "oldRnd": 28, "newRnd": 38 }, // 2
+                        {"id": 293, "oldRnd": 31, "newRnd": 30 }, // 3 
+                        {"id": 302, "oldRnd": 31, "newRnd": 31 }, // 4
+                        {"id": 303, "oldRnd": 31, "newRnd": 31 }, // 5
+                        {"id": 305, "oldRnd": 31, "newRnd": 31 }, // 6
+                        {"id": 306, "oldRnd": 31, "newRnd": 31 }, // 7
+                        {"id": 307, "oldRnd": 31, "newRnd": 31 }, // 8
+                        {"id": 308, "oldRnd": 31, "newRnd": 31 }, // 9
+                        {"id": 337, "oldRnd": 34, "newRnd": 34 }  // 10
+                    ];
+
 
 /*  Array to store the event data from FPL */
 let FPLData = [];
@@ -38,12 +62,15 @@ function loadDoc() {
                 arrB4Sort[ev].team_a_nm = FPLTeams[arrB4Sort[ev].team_a];
 
                 let evId = arrB4Sort[ev].id; 
-                    if( evId == 337 ){
-                        //  337: MNC v NEW league cup reschedules
-                        arrB4Sort[ev].event = 34;   
-                    }else if( evId == 271 ) {
+                    if( evId == 271 ) {
                         // 271: AVL v SHU league cup reschedules
-                        arrB4Sort[ev].event = 38;   
+                        arrB4Sort[ev].event = 38; 
+                    }else if( evId == 275 ){
+                        //  275: MNC v ARS covid-19
+                        arrB4Sort[ev].event = 38;
+                    }else if( evId == 293 ){
+                        //  293: ARS v BHA FA cup tie
+                        arrB4Sort[ev].event = 30;
                     }else if( evId == 302 ) {
                         // 302: CHE v MNC FA cup tie
                         arrB4Sort[ev].event = 31;   
@@ -61,7 +88,10 @@ function loadDoc() {
                         arrB4Sort[ev].event = 31;   
                     }else if( evId == 308 ) {
                         //  308: SOU v ARS FA cup tie                           
-                        arrB4Sort[ev].event = 31;                        
+                        arrB4Sort[ev].event = 31;
+                    }else if( evId == 337 ){
+                        //  337: MNC v NEW league cup reschedules
+                        arrB4Sort[ev].event = 34;
                     }
             }
 
@@ -91,9 +121,13 @@ function loadDoc() {
 
 loadDoc();
 
+function showEvent(id){
+    for(let e=0; e< FPLData.length; e++){ if( FPLData[e].id == id ){ return FPLData[e]; }}
+}
+
 function markCurrentRound(curRound){
     let tblHdr = $('#tbl thead tr th').toArray();
-    for (let c = 0; c < 40; c++) {
+    for (let c = 1; c < 40; c++) {
         if ( c == curRound ) { tblHdr[c].classList += "curRound"; }
     }
 }
@@ -105,13 +139,10 @@ function hideRoundsPlayed(curRound) {
         tblHdr[c].classList = "";
         if ((c > 1) && (c <= (curRound + 1))) { tblHdr[c].classList += "clmnHide"; }
     }
-
 }
 
 function getNextRound() {
-
     return rndsPlayed;
-
     /* determins which rounds have been played (or at least selection is closed) */
     // console.log( " FPLData.length", FPLData.length, "FPLData[r].finished", FPLData[0].finished );
 
@@ -136,9 +167,36 @@ function getNextRound() {
 
 function getAllTeams(rndCnt) {
     /* loops through all teams and gets their opponents relevant data */
-    for (let t = 1; t < 21; t++) { getTeams(t, rndCnt); }
     console.log("getAllTeams r+", rndCnt);
+    for (let t = 1; t < 21; t++) { getTeams(t, rndCnt); }
+    console.log("marking postponed..", markPostponed() )
+    console.log("hiding played games..", hidePastEvents() )
 }
+
+function hidePastEvents(){
+    let tdevents = $( "td[plyd='true']" ); 
+    if( tdevents.length > 0 ) { tdevents.addClass( "tchide" ); } 
+}
+
+function markPostponed(){
+    jQuery.each( 
+        ppEevents, 
+        function(i,val){
+            let tdevents = $( "td[evid='" + val.id + "']"  ); 
+            console.log(
+                "jQuery.each....", val.id , "check:",
+                tdevents.length ,
+                tdevents.addClass("postponed") 
+            );
+        }
+    )
+}
+
+
+/*
+<td class="evtTeamBlock" loc="A" df="3" plyd="false" insel="true" evid="303" onclick="fn_teamStats(4,9)" title="303: LEI (A)">31: LEI (A)</td>
+*/
+
 
 function getTeams(tmId, rnds) {
     /* 
@@ -198,15 +256,14 @@ function getTeams(tmId, rnds) {
     jQuery.each(OppList, function (i, val) {
         let evntClassList = ["evtTeamBlock"];
     /* hide cell if round has been played */
-        if( ( val.eventId in [ 271,303,337,305,306,307,308 ] ) ){ evntClassList.push( "postponed" );  }
         if( val.plyd ) { evntClassList.push( "played" ); } 
-        if( !val.inSel ) { evntClassList.push( "tchide" ); } 
         $(
             "<td class='"   + evntClassList.join(" ") + 
             "' loc="        + val.loc + 
             " df="          + val.dfc + 
             " plyd="        + val.plyd + 
             " inSel="       + val.inSel + 
+            " evId="        + val.eventId +
             " onclick='fn_teamStats(" + tmId + 
             ","             + OppList[i].opp + 
             ")' title='"    + val.eventId + 
