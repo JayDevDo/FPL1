@@ -33,7 +33,7 @@ const localJsonFile = "events_20200620.json";
     rndsPlayed  will be changed once FPL data is loaded 
     Due to changes in the calendar the eventround is now set manually
 */
-let rndsPlayed  = 42;
+let rndsPlayed  = 43;
 
 let ppEevents   =   [ /*
                         {"id": 271, "oldRnd": 28, "newRnd": 38 }, // 1 
