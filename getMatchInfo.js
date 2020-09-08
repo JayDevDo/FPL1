@@ -33,7 +33,7 @@ const localJsonFile = "events_20200620.json";
     rndsPlayed  will be changed once FPL data is loaded 
     Due to changes in the calendar the eventround is now set manually
 */
-let rndsPlayed  = 44;
+let rndsPlayed  = 0;
 
 let ppEevents   =   [ /*
                         {"id": 271, "oldRnd": 28, "newRnd": 38 }, // 1 
@@ -130,7 +130,7 @@ function loadDoc() {
 
     if( serverUrl !== "jaydevdo.github.io" ){
       // served local
-        console.log("served local. data drom ", localJsonFile)
+        console.log("served local. data from ", localJsonFile)
         xhttp.open("GET", localJsonFile, true);
     }else{
       // served github
