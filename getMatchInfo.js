@@ -208,7 +208,7 @@ function hidePastEvents(){
     let tdevents = $( "td[plyd='true']" ); 
     let tdRounds = $( "td[insel='false']" ); 
     console.log("td[evrnd =< . size = ", tdRounds.length )
-    if( tdRounds.length > 0 ) { tdRounds.addClass( "tchide" ); } 
+    if( tdRounds.length >= 0 ) { tdRounds.addClass( "tchide" ); } 
     return tdRounds.length + " hidden";
 }
 
