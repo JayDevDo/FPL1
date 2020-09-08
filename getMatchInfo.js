@@ -166,7 +166,7 @@ function markCurrentRound(curRound){
 function hideRoundsPlayed(curRound) {
     /* to hide table header rounds that have finished */
     let tblHdr = $('#tbl thead tr th').toArray();
-    for (let c = 0; c < 48; c++) {
+    for (let c = 0; c < 40; c++) {
         tblHdr[c].classList = "";
         if ((c > 1) && (c <= (curRound + 1))) { tblHdr[c].classList += "clmnHide"; }
     }
