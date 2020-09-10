@@ -4,28 +4,29 @@
     1: to be in sync with FPL teamIds (start with Arsenal = 1) 
     2: to be in sync with table rows.
 */
+
 const FPLTeams = [  "Team", 
-                    "ARS", 
-                    "AVL",
-                    "BHA", 
-                    "BUR", 
-                    "CHE", 
-                    "CRY", 
-                    "EVE",
-                    "FUL", 
-                    "lEE", 
-                    "LEI", 
-                    "LIV", 
-                    "MNC", 
-                    "MUN", 
-                    "NEW", 
-                    "SHU", 
-                    "SOU", 
-                    "TOT", 
-                    "WBA", 
-                    "WHU", 
-                    "WOL"
-                ];
+/* 1 */ "ARS",  
+/* 2 */ "AVL", 
+/* 3 */ "BHA", 
+/* 4 */ "BUR", 
+/* 5 */ "CHE", 
+/* 6 */ "CRY", 
+/* 7 */ "EVE", 
+/* 8 */ "FUL", 
+/* 9 */ "LEE", 
+/* 10 */ "LEI", 
+/* 11 */ "LIV", 
+/* 12 */ "MNC", 
+/* 13 */ "MUN", 
+/* 14 */ "NEW", 
+/* 15 */ "SHU", 
+/* 16 */ "SOU",  
+/* 17 */ "TOT", 
+/* 18 */ "WBA", 
+/* 19 */ "WHU", 
+/* 20 */ "WOL"
+];
 
 /* url from FPL with data */
 const json_string = 'https://fantasy.premierleague.com/api/fixtures/?event>0';
@@ -43,21 +44,15 @@ const localJsonFile = "events_2020-2021.json";
     rndsPlayed  will be changed once FPL data is loaded 
     Due to changes in the calendar the eventround is now set manually
 */
-let rndsPlayed  = 0;
+let rndsPlayed  = -1;
 
-let ppEevents   =   [ /*
-                        {"id": 271, "oldRnd": 28, "newRnd": 38 }, // 1 
-                        {"id": 275, "oldRnd": 28, "newRnd": 38 }, // 2
-                        {"id": 293, "oldRnd": 31, "newRnd": 30 }, // 3 
-                        {"id": 302, "oldRnd": 31, "newRnd": 31 }, // 4
-                        {"id": 303, "oldRnd": 31, "newRnd": 31 }, // 5
-                        {"id": 305, "oldRnd": 31, "newRnd": 31 }, // 6
-                        {"id": 306, "oldRnd": 31, "newRnd": 31 }, // 7
-                        {"id": 307, "oldRnd": 31, "newRnd": 31 }, // 8
-                        {"id": 308, "oldRnd": 31, "newRnd": 31 }, // 9
-                        {"id": 337, "oldRnd": 34, "newRnd": 34 }  // 10
-                      */  
-                    ];
+let ppEevents   =   [ 
+						{"id": 379, "oldRnd": 1, "newRnd": 38 }, // 1  
+						{"id": 380, "oldRnd": 1, "newRnd": 38 }  // 2  
+						/* 
+						{"id": 379, "oldRnd": 1, "newRnd": 38 }, // 1
+						*/  
+					];
 
 
 /*  Array to store the event data from FPL */
@@ -87,33 +82,10 @@ function loadDoc() {
                         }else if( evId == 275 ){
                             //  275: MNC v ARS covid-19
                             arrB4Sort[ev].event = 38;
-                        }else if( evId == 293 ){
-                            //  293: ARS v BHA FA cup tie
-                            arrB4Sort[ev].event = 30;
-                        }else if( evId == 302 ) {
-                            // 302: CHE v MNC FA cup tie
-                            arrB4Sort[ev].event = 31;   
-                        }else if( evId == 303 ) {
-                            // 303: LEI v BHA FA cup tie
-                            arrB4Sort[ev].event = 31;   
-                        }else if( evId == 305 ) {
-                            // 305: MNU v SHE FA cup tie
-                            arrB4Sort[ev].event = 31;   
-                        }else if( evId == 306 ) {
-                            // 306: NEW v AVL FA cup tie
-                            arrB4Sort[ev].event = 31;   
-                        }else if( evId == 307 ) {
-                            // 307: NOR v EVE FA cup tie
-                            arrB4Sort[ev].event = 31;   
-                        }else if( evId == 308 ) {
-                            //  308: SOU v ARS FA cup tie                           
-                            arrB4Sort[ev].event = 31;
-                        }else if( evId == 337 ){
-                            //  337: MNC v NEW league cup reschedules
-                            arrB4Sort[ev].event = 34;
                         }
                     */
             }
+/* localhost://JAVA/FPL/FPL/index.html */
 
             FPLData = arrB4Sort.sort(
                 function (a, b) {
@@ -158,7 +130,7 @@ function showEvent(id){
 
 function markCurrentRound(curRound){
     let tblHdr = $('#tbl thead tr th').toArray();
-    for (let c = 1; c < 48; c++) {
+    for (let c = 1; c < 40; c++) {
         if ( c == curRound ) { tblHdr[c].classList += "curRound"; }
     }
 }
@@ -166,6 +138,7 @@ function markCurrentRound(curRound){
 function hideRoundsPlayed(curRound) {
     /* to hide table header rounds that have finished */
     let tblHdr = $('#tbl thead tr th').toArray();
+    console.log("hideRoundsPlayed > tblHdr len", tblHdr.length )
     for (let c = 0; c < 40; c++) {
         tblHdr[c].classList = "";
         if ((c > 1) && (c <= (curRound + 1))) { tblHdr[c].classList += "clmnHide"; }
@@ -251,6 +224,7 @@ function getTeams(tmId, rnds) {
             /* Only count games not played and selected number of rounds by user */
         
             let rndSelected = ((event.event > rndsPlayed) && (event.event <= (rndsPlayed + rnds)));
+            console.log("rndSelected = ", rndSelected )
 
             if (event.team_h == tmId) { /* selected team is playing at Home */
                 if (rndSelected) { ttlDF += event.team_h_difficulty; }
@@ -303,8 +277,8 @@ function getTeams(tmId, rnds) {
             " title='"       + val.eventId + 
             ": "            + val.OpNm + 
             " ("            + val.loc + 
-            ")' >"          + val.evround + 
-            ": "            + val.OpNm + 
+            ")' >"    /*      + val.evround + 
+            ": "       */     + val.OpNm + 
             " ("            + val.loc + 
             ")</td>"
         ).appendTo("#" + FPLTeams[tmId]);

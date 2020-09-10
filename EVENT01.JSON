@@ -1,0 +1,63 @@
+[
+{
+	"code":2128288,
+	"event":1,
+	"finished":false,
+	"finished_provisional":false,
+	"id":2,
+	"kickoff_time":"2020-09-12T11:30:00Z",
+	"minutes":0,
+	"provisional_start_time":false,
+	"started":false,
+	"team_a":1,
+	"team_a_score":null,
+	"team_h":8,
+	"team_h_score":null,
+	"stats":[],
+	"team_h_difficulty":3,
+	"team_a_difficulty":2
+},{
+	"code":2128287,
+	"event":1,
+	"finished":false,
+	"finished_provisional":false,
+	"id":1,
+	"kickoff_time":"2020-09-12T14:00:00Z",
+	"minutes":0,
+	"provisional_start_time":false,
+	"started":false,
+	"team_a":16,
+	"team_a_score":null,
+	"team_h":6,
+	"team_h_score":null,
+	"stats":[],
+	"team_h_difficulty":3,
+	"team_a_difficulty":2
+},{
+	"code":2128289,
+	"event":1,
+	"finished":false,
+	"finished_provisional":false,
+	"id":3,"kickoff_time":"2020-09-12T16:30:00Z",
+	"minutes":0,
+	"provisional_start_time":false,
+	"started":false,
+	"team_a":10,
+	"team_a_score":null,
+	"team_h":11,
+	"team_h_score":null,
+	"stats":[],
+	"team_h_difficulty":2,
+	"team_a_difficulty":5
+},{
+	"code":2128293,"event":1,"finished":false,"finished_provisional":false,"id":6,"kickoff_time":"2020-09-12T19:00:00Z","minutes":0,"provisional_start_time":false,"started":false,"team_a":14,"team_a_score":null,"team_h":19,"team_h_score":null,"stats":[],"team_h_difficulty":2,"team_a_difficulty":2
+},{
+	"code":2128292,"event":1,"finished":false,"finished_provisional":false,"id":5,"kickoff_time":"2020-09-13T13:00:00Z","minutes":0,"provisional_start_time":false,"started":false,"team_a":9,"team_a_score":null,"team_h":18,"team_h_score":null,"stats":[],"team_h_difficulty":3,"team_a_difficulty":2
+},{
+	"code":2128291,"event":1,"finished":false,"finished_provisional":false,"id":4,"kickoff_time":"2020-09-13T15:30:00Z","minutes":0,"provisional_start_time":false,"started":false,"team_a":7,"team_a_score":null,"team_h":17,"team_h_score":null,"stats":[],"team_h_difficulty":2,"team_a_difficulty":4
+},{
+	"code":2128295,"event":1,"finished":false,"finished_provisional":false,"id":8,"kickoff_time":"2020-09-14T17:00:00Z","minutes":0,"provisional_start_time":false,"started":false,"team_a":20,"team_a_score":null,"team_h":15,"team_h_score":null,"stats":[],"team_h_difficulty":3,"team_a_difficulty":4
+},{
+	"code":2128294,"event":1,"finished":false,"finished_provisional":false,"id":7,"kickoff_time":"2020-09-14T19:15:00Z","minutes":0,"provisional_start_time":false,"started":false,"team_a":5,"team_a_score":null,"team_h":3,"team_h_score":null,"stats":[],"team_h_difficulty":3,"team_a_difficulty":2
+}
+]

@@ -26,7 +26,7 @@ tr>td:first-of-type{
     color: #ebebe4;
 }
 tr>td:nth-of-type(2){
-    color: #ebebe4;
+    color: #000000;
 }
 
 td[df="2"]{
@@ -68,11 +68,12 @@ td[inSel="false"]{
 }
 
 .postponed{
-    background-color: #ffff00 !important;
+    background-color: #ADADAD !important;
 }
 
 .postponed::after {
     content: " postponed";
+    background-color: #ADADAD !important;
 }
 
 .played{
