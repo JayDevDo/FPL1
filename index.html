@@ -18,10 +18,10 @@
   </head>
   <body>
 	<button onclick="getAllTeams(39)" disabled>Get all games</button>
-	<button onclick="getAllTeams(4)"  disabled>Get next 3 games</button>
-	<button onclick="getAllTeams(6)"  disabled>Get next 5 games</button>
-	<button onclick="getAllTeams(9)"  disabled>Get next 8 games</button>
-	<button onclick="getAllTeams(11)" disabled>Get next 10 games</button>
+	<button onclick="getAllTeams(3)"  disabled>Get next 3 games</button>
+	<button onclick="getAllTeams(5)"  disabled>Get next 5 games</button>
+	<button onclick="getAllTeams(8)"  disabled>Get next 8 games</button>
+	<button onclick="getAllTeams(10)" disabled>Get next 10 games</button>
 	
 	<div id="mdl_gameTeamStats" class="notModal">
 		<div class="tmStatBox">
@@ -88,8 +88,8 @@
 			<tr id="CRY" tmId="6"><th>Crystal Plc</th></tr>
 			<tr id="EVE" tmId="7"><th>Everton</th></tr>
 			<tr id="FUL" tmId="8"><th>Fulham</th></tr>
-			<tr id="LEE" tmId="9"><th>Leeds</th></tr>
-			<tr id="LEI" tmId="10"><th>Leicester</th></tr>
+			<tr id="LEE" tmId="10"><th>Leeds</th></tr>
+			<tr id="LEI" tmId="9"><th>Leicester</th></tr>
 			<tr id="LIV" tmId="11"><th>Liverpool</th></tr>
 			<tr id="MNC" tmId="12"><th>Man City</th></tr>
 			<tr id="MUN" tmId="13"><th>Man Utd</th></tr>
@@ -102,6 +102,121 @@
 			<tr id="WOL" tmId="20"><th>Wolves</th></tr>
 		</tbody>
 	</table>
+
+	<div  >
+		<!-- placeholder for overview of home-away difficulty factor per team -->
+		<table>
+			<thead>
+				<tr>
+					<th>TEAM</th>
+					<th>HOME</th>
+					<th>AWAY</th>
+				</tr>
+			</thead>
+			<tbody id="tm_df_tbl">
+				<tr id="ARS" tmId="1">
+					<th>Arsenal</th>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr id="AVL" tmId="2">
+					<th>Aston Villa</th>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr id="BHA" tmId="3">
+					<th>Brighton</th>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr id="BUR" tmId="4">
+					<th>Burnley</th>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr id="CHE" tmId="5">
+					<th>Chelsea</th>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr id="CRY" tmId="6">
+					<th>Crystal Plc</th>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr id="EVE" tmId="7">
+					<th>Everton</th>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr id="FUL" tmId="8">
+					<th>Fulham</th>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr id="LEE" tmId="10">
+					<th>Leeds</th>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr id="LEI" tmId="9">
+					<th>Leicester</th>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr id="LIV" tmId="11">
+					<th>Liverpool</th>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr id="MNC" tmId="12">
+					<th>Man City</th>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr id="MUN" tmId="13">
+					<th>Man Utd</th>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr id="NEW" tmId="14">
+					<th>Newcastle</th>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr id="SHU" tmId="15">
+					<th>Sheffield Utd</th>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr id="SOU" tmId="16">
+					<th>Southampton</th>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr id="TOT" tmId="17">
+					<th>Spurs</th>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr id="WBA" tmId="18">
+					<th>West Brom</th>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr id="WHU" tmId="19">
+					<th>West Ham</th>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr id="WOL" tmId="20">
+					<th>Wolves</th>
+					<td></td>
+					<td></td>
+				</tr>
+			</tbody>			
+		</table>
+	</div>
 
 	<script src="getMatchInfo.js"></script>
  </body>

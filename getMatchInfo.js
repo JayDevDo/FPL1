@@ -5,7 +5,8 @@
     2: to be in sync with table rows.
 */
 
-const FPLTeams = [  "Team", 
+const FPLTeams = [  
+/* 0 */ "Team", 
 /* 1 */ "ARS",  
 /* 2 */ "AVL", 
 /* 3 */ "BHA", 
@@ -14,8 +15,8 @@ const FPLTeams = [  "Team",
 /* 6 */ "CRY", 
 /* 7 */ "EVE", 
 /* 8 */ "FUL", 
-/* 10 */ "LEI", 
-/* 9 */ "LEE", 
+/* 10 seems odd LEE comes before LEI */ "LEI", 
+/* 9  seems odd LEE comes before LEI */ "LEE", 
 /* 11 */ "LIV", 
 /* 12 */ "MNC", 
 /* 13 */ "MUN", 
@@ -44,11 +45,11 @@ const localJsonFile = "events_2020-2021.json";
     rndsPlayed  will be changed once FPL data is loaded 
     Due to changes in the calendar the eventround is now set manually
 */
-let rndsPlayed  = -1;
+let rndsPlayed  = 5;
 
 let ppEevents   =   [ 
-						{"id": 379, "oldRnd": 1, "newRnd": 38 }, // 1  
-						{"id": 380, "oldRnd": 1, "newRnd": 38 }  // 2  
+						{"id": 379, "oldRnd": 1, "newRnd": 39 }, // 1  
+						{"id": 380, "oldRnd": 1, "newRnd": 39 }  // 2  
 						/* 
 						{"id": 379, "oldRnd": 1, "newRnd": 38 }, // 1
 						*/  
@@ -57,6 +58,14 @@ let ppEevents   =   [
 
 /*  Array to store the event data from FPL */
 let FPLData = [];
+let FPL_TD = [ 
+                {   
+                    "tmId": 0,
+                    "tmNm": "Team",
+                    "tmHm": 0,
+                    "tmAw": 0
+                },
+                {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{} ];
 
 function loadDoc() {
     /* Get the data from FPL thru CORS evasion site and save data */
@@ -71,21 +80,23 @@ function loadDoc() {
 
             /* Adding team names to events */
             for (let ev = 0; ev < arrB4Sort.length; ev++) {
+
                 arrB4Sort[ev].team_h_nm = FPLTeams[arrB4Sort[ev].team_h];
                 arrB4Sort[ev].team_a_nm = FPLTeams[arrB4Sort[ev].team_a];
 
                 let evId = arrB4Sort[ev].id; 
-                    /*
-                        if( evId == 271 ) {
-                            // 271: AVL v SHU league cup reschedules
+                    
+                        if( evId == 379 ) {
+                            // 379: BUR V MNU summer break uefa
                             arrB4Sort[ev].event = 38; 
-                        }else if( evId == 275 ){
-                            //  275: MNC v ARS covid-19
+                        }else if( evId == 380 ){
+                            //  380: MNC v AVL summer break uefa
                             arrB4Sort[ev].event = 38;
                         }
-                    */
+                    
             }
-/* localhost://JAVA/FPL/FPL/index.html */
+
+            /* localhost://JAVA/FPL/FPL/index.html */
 
             FPLData = arrB4Sort.sort(
                 function (a, b) {
@@ -175,17 +186,19 @@ function getAllTeams(rndCnt) {
     for (let t = 1; t < 21; t++) { getTeams(t, rndCnt); }
     console.log("marking postponed..", markPostponed() )
     console.log("hiding played games..", hidePastEvents() )
+   // console.log("fillTmDFTable..", fillTmDFTable() )
 }
 
 function hidePastEvents(){
     let tdevents = $( "td[plyd='true']" ); 
     let tdRounds = $( "td[insel='false']" ); 
-    console.log("td[evrnd =< . size = ", tdRounds.length )
+    console.log("td_inselection=false", tdRounds.length )
     if( tdRounds.length >= 0 ) { tdRounds.addClass( "tchide" ); } 
     return tdRounds.length + " hidden";
 }
 
 function markPostponed(){
+    // ppEevents is an array with postponed games declared earlier
     jQuery.each( 
         ppEevents, 
         function(i,val){
@@ -205,6 +218,26 @@ function markPostponed(){
 <td class="evtTeamBlock" loc="A" df="3" plyd="false" insel="true" evid="303" onclick="fn_teamStats(4,9)" title="303: LEI (A)">31: LEI (A)</td>
 */
 
+function fltrFPLData(dataArr, tmId){
+    let retResArr = [];
+    console.log("fltrFPLData","tmId", tmId, dataArr.length )
+
+    retResArr = dataArr.filter(
+        function (a) {
+            let A = a.team_h;
+            let B = a.team_a;
+                // console.log( "comparing events:", a.id, "and ", b.id );
+                if ( (parseInt(A)==parseInt(tmId)) || (parseInt(B)==parseInt(tmId)) ) 
+                    { return 1; }
+                else
+                    { return -1; }
+        }
+    );
+
+    console.log("dataArr after filter: ", retResArr.length )
+    return retResArr;
+}
+
 
 function getTeams(tmId, rnds) {
     /* 
@@ -216,37 +249,57 @@ function getTeams(tmId, rnds) {
     let ttlDF = 0;
 
     if (FPLData) {
-        console.log("FPLData len:", FPLData.length );
-        for (let i = 0; i < FPLData.length; i++) {
+        //  console.log("FPLData len:", FPLData.length );
+        console.log("filtered FPLData:", fltrFPLData(FPLData, tmId) )
+
+        for (let i = 0; i < FPLData.length; i++ ) {
             let event = FPLData[i];
             let gtres;
             
             /* Only count games not played and selected number of rounds by user */
-        
             let rndSelected = ((event.event > rndsPlayed) && (event.event <= (rndsPlayed + rnds)));
-            console.log("rndSelected = ", rndSelected )
+            // console.log("event.event",event.event ,"rndsPlayed",rndsPlayed , "rnds", rnds, ' rndSelected', rndSelected)
+            // console.log("rndSelected = ", rndSelected )
 
             if (event.team_h == tmId) { /* selected team is playing at Home */
+
+                console.log(
+                    "getTeams_FPLData: event.team_h:", 
+                    tmId, "nm:", FPLTeams[tmId],"rnds:", rnds);
+
                 if (rndSelected) { ttlDF += event.team_h_difficulty; }
+
+                FPL_TD[tmId].tmId = tmId;
+                FPL_TD[tmId].tmNm = FPLTeams[tmId],
+                FPL_TD[tmId].tmHm = event.team_h_difficulty;
+
                 OppList.push({ 
                     "eventId": event.id ,
                     "evround": event.event,
                     "loc": "H", 
+                    "curTmId": event.team_h,
+                    "Hdfc": event.team_h_difficulty, 
                     "opp": event.team_a, 
                     "OpNm": FPLTeams[event.team_a], 
-                    "dfc": event.team_h_difficulty, 
+                    "dfc": event.team_a_difficulty, 
                     "plyd": event.finished, 
                     "inSel": rndSelected
                 });
             } else if (event.team_a == tmId) { /* selected team is playing Away */
                 if (rndSelected) { ttlDF += event.team_a_difficulty; }
+                FPL_TD[tmId].tmId = tmId;
+                FPL_TD[tmId].tmNm = FPLTeams[tmId],
+                FPL_TD[tmId].tmAw = event.team_a_difficulty;
+
                 OppList.push({ 
                     "eventId": event.id ,
                     "evround": event.event,
                     "loc": "A", 
+                    "curTmId": event.team_a,
+                    "Hdfc": event.team_a_difficulty, 
                     "opp": event.team_h, 
                     "OpNm": FPLTeams[event.team_h], 
-                    "dfc": event.team_a_difficulty, 
+                    "dfc": event.team_h_difficulty, 
                     "plyd": event.finished, 
                     "inSel": rndSelected
                 });
@@ -269,13 +322,16 @@ function getTeams(tmId, rnds) {
         $(
             "<td class='"   + evntClassList.join(" ") + 
             "' loc="        + val.loc + 
-            " df="          + val.dfc + 
+            " df="          + val.Hdfc + 
             " plyd="        + val.plyd + 
             " inSel="       + val.inSel + 
             " evId="        + val.eventId +   
             " evRnd="       + val.evround +
+            " evCtmID="     + val.curTmId +
+            " evOtmID="     + val.opp +
             " title='"       + val.eventId + 
             ": "            + val.OpNm + 
+            " df="          + val.Hdfc +
             " ("            + val.loc + 
             ")' >"    /*      + val.evround + 
             ": "       */     + val.OpNm + 
@@ -301,6 +357,14 @@ let eventRndFltrVal = 1;
 
 function rndFltrFnc(arrVal) { return ( parseInt(arrVal.event) === eventRndFltrVal ); }
 function pstpndRndFltrFnc(arrVal) { return ( arrVal.event === 0 ); }
+
+function fillTmDFTable(){
+    let targetTable = $(".tm_df_tbl")
+    console.log("FPL_TD", FPL_TD)
+
+//         for (let t = 1; t < 21; t++) {  let targetRow   = targetTable.row(t+1) }
+}
+
 
 function fltrEventsByRound(EvtRnd){ 
     eventRndFltrVal = EvtRnd;
