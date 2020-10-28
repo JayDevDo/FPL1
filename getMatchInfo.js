@@ -45,7 +45,7 @@ const localJsonFile = "events_2020-2021.json";
     rndsPlayed  will be changed once FPL data is loaded 
     Due to changes in the calendar the eventround is now set manually
 */
-let rndsPlayed  = 5;
+let rndsPlayed  = 6;
 
 let ppEevents   =   [ 
 						{"id": 379, "oldRnd": 1, "newRnd": 39 }, // 1  
@@ -317,7 +317,7 @@ function getTeams(tmId, rnds) {
     /* Add all selected games to the team row after diff. factor */
     jQuery.each(OppList, function (i, val) {
         let evntClassList = ["evtTeamBlock"];
-    /* hide cell if round has been played */
+    	/* hide cell if round has been played */
         if( val.plyd ) { evntClassList.push( "played" ); } 
         $(
             "<td class='"   + evntClassList.join(" ") + 
@@ -336,7 +336,8 @@ function getTeams(tmId, rnds) {
             ")' >"    /*      + val.evround + 
             ": "       */     + val.OpNm + 
             " ("            + val.loc + 
-            ")</td>"
+            ") " 		+ val.dfc +
+		"</td>"
         ).appendTo("#" + FPLTeams[tmId]);
     });
 
