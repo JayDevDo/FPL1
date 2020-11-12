@@ -22,14 +22,14 @@ td{
     color: #ffffff;
 }
 
-/*
+
 td[df="2"]{
     background-color: #00ff86;
     color: #000000;
 }
 
 td[df="3"]{
-    background-color: #ebebe4;
+    background-color: #ff8533;
     color: #000000;
 }
 
@@ -52,7 +52,6 @@ td[ev_df_df="2"]{
     color: #000FFF;
     background-color: #000DAD;    
 }
-*/
 
 td[plyd="true"]{
     background-color: #000000 !important;
