@@ -14,12 +14,24 @@
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
 	>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="jquery.min.js"></script>
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	<script src="jquery-ui.min.js"></script>
+
+	<script src="getMatchInfo.js"></script>
+	<script src="fplMakeTableDF.js"></script>
+	
+	<script type="text/javascript">
+		let FPLData = [];
+	</script>
+
   </head>
   <body>
 	<button onclick="getAllTeams(39)" disabled>Get all games</button>
 	<button onclick="getAllTeams(3)"  disabled>Get next 3 games</button>
 	<button onclick="getAllTeams(5)"  disabled>Get next 5 games</button>
+	<button onclick="getAllTeams(7)"  disabled>Get next 7 games</button>	
 	<button onclick="getAllTeams(8)"  disabled>Get next 8 games</button>
 	<button onclick="getAllTeams(10)" disabled>Get next 10 games</button>
 	
@@ -39,47 +51,47 @@
 			<tr>
 				<th>Team</th>
 				<th title="Difficulty according to FPL ranking (2,3,4 or 5)">Diff Coef.</th>
-				<th>Rnd 01</th>
-				<th>Rnd 02</th>
-				<th>Rnd 03</th>
-				<th>Rnd 04</th>
-				<th>Rnd 05</th>
-				<th>Rnd 06</th>
-				<th>Rnd 07</th>
-				<th>Rnd 08</th>
-				<th>Rnd 09</th>
-				<th>Rnd 10</th>
-				<th>Rnd 11</th>
-				<th>Rnd 12</th>
-				<th>Rnd 13</th>
-				<th>Rnd 14</th>
-				<th>Rnd 15</th>
-				<th>Rnd 16</th>
-				<th>Rnd 17</th>
-				<th>Rnd 18</th>
-				<th>Rnd 19</th>
-				<th>Rnd 20</th>
-				<th>Rnd 21</th>
-				<th>Rnd 22</th>
-				<th>Rnd 23</th>
-				<th>Rnd 24</th>
-				<th>Rnd 25</th>
-				<th>Rnd 26</th>
-				<th>Rnd 27</th>
-				<th>Rnd 28</th>
-				<th>Rnd 29</th>
-				<th>Rnd 30</th>
-				<th>Rnd 31</th>
-				<th>Rnd 32</th>
-				<th>Rnd 33</th>
-				<th>Rnd 34</th>
-				<th>Rnd 35</th>
-				<th>Rnd 36</th>
-				<th>Rnd 37</th>
-				<th>Rnd 38</th>
+				<th>Round 01</th>
+				<th>Round 02</th>
+				<th>Round 03</th>
+				<th>Round 04</th>
+				<th>Round 05</th>
+				<th>Round 06</th>
+				<th>Round 07</th>
+				<th>Round 08</th>
+				<th>Round 09</th>
+				<th>Round 10</th>
+				<th>Round 11</th>
+				<th>Round 12</th>
+				<th>Round 13</th>
+				<th>Round 14</th>
+				<th>Round 15</th>
+				<th>Round 16</th>
+				<th>Round 17</th>
+				<th>Round 18</th>
+				<th>Round 19</th>
+				<th>Round 20</th>
+				<th>Round 21</th>
+				<th>Round 22</th>
+				<th>Round 23</th>
+				<th>Round 24</th>
+				<th>Round 25</th>
+				<th>Round 26</th>
+				<th>Round 27</th>
+				<th>Round 28</th>
+				<th>Round 29</th>
+				<th>Round 30</th>
+				<th>Round 31</th>
+				<th>Round 32</th>
+				<th>Round 33</th>
+				<th>Round 34</th>
+				<th>Round 35</th>
+				<th>Round 36</th>
+				<th>Round 37</th>
+				<th>Round 38</th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody class="DF_overview">
 			<tr id="ARS" tmId="1"><th>Arsenal</th></tr>
 			<tr id="AVL" tmId="2"><th>Aston Villa</th></tr>
 			<tr id="BHA" tmId="3"><th>Brighton</th></tr>
@@ -103,6 +115,8 @@
 		</tbody>
 	</table>
 
+	<button onclick="mkDFTable()" >mk_df_table</button>
+
 	<div  >
 		<!-- placeholder for overview of home-away difficulty factor per team -->
 		<table>
@@ -110,114 +124,134 @@
 				<tr>
 					<th>TEAM</th>
 					<th>HOME</th>
+					<th> - </th>
 					<th>AWAY</th>
 				</tr>
 			</thead>
 			<tbody id="tm_df_tbl">
 				<tr id="ARS" tmId="1">
 					<th>Arsenal</th>
-					<td></td>
-					<td></td>
+					<td df="4" >4</td>
+					<td> - </td>
+					<td df="3" >3</td>
 				</tr>
 				<tr id="AVL" tmId="2">
 					<th>Aston Villa</th>
-					<td></td>
-					<td></td>
+					<td df="3" >3</td>
+					<td> - </td>
+					<td df="2" >2</td>
 				</tr>
 				<tr id="BHA" tmId="3">
 					<th>Brighton</th>
-					<td></td>
-					<td></td>
+					<td df="3" >3</td>
+					<td> - </td>
+					<td df="2" >2</td>
 				</tr>
 				<tr id="BUR" tmId="4">
 					<th>Burnley</th>
-					<td></td>
-					<td></td>
+					<td df="2" >2</td>
+					<td> - </td>
+					<td df="3" >3</td>
 				</tr>
 				<tr id="CHE" tmId="5">
 					<th>Chelsea</th>
-					<td></td>
-					<td></td>
+					<td df="4" >4</td>
+					<td> - </td>
+					<td df="3" >3</td>
 				</tr>
 				<tr id="CRY" tmId="6">
 					<th>Crystal Plc</th>
-					<td></td>
-					<td></td>
+					<td df="3" >3</td>
+					<td> - </td>
+					<td df="2" >2</td>
 				</tr>
 				<tr id="EVE" tmId="7">
 					<th>Everton</th>
-					<td></td>
-					<td></td>
+					<td df="3" >3</td>
+					<td> - </td>
+					<td df="2" >2</td>
 				</tr>
 				<tr id="FUL" tmId="8">
 					<th>Fulham</th>
-					<td></td>
-					<td></td>
+					<td df="2" >2</td>
+					<td> - </td>
+					<td df="2" >2</td>
 				</tr>
 				<tr id="LEE" tmId="10">
 					<th>Leeds</th>
-					<td></td>
-					<td></td>
+					<td df="3" >3</td>
+					<td> - </td>
+					<td df="2" >2</td>
 				</tr>
 				<tr id="LEI" tmId="9">
 					<th>Leicester</th>
-					<td></td>
-					<td></td>
+					<td df="4" >4</td>
+					<td> - </td>
+					<td df="3" >3</td>
 				</tr>
 				<tr id="LIV" tmId="11">
 					<th>Liverpool</th>
-					<td></td>
-					<td></td>
+					<td df="5" >5</td>
+					<td> - </td>
+					<td df="4" >4</td>
 				</tr>
 				<tr id="MNC" tmId="12">
 					<th>Man City</th>
-					<td></td>
-					<td></td>
+					<td df="5" >5</td>
+					<td> - </td>
+					<td df="4" >4</td>
 				</tr>
 				<tr id="MUN" tmId="13">
 					<th>Man Utd</th>
-					<td></td>
-					<td></td>
+					<td df="4" >4</td>
+					<td> - </td>
+					<td df="4" >4</td>
 				</tr>
 				<tr id="NEW" tmId="14">
 					<th>Newcastle</th>
-					<td></td>
-					<td></td>
+					<td df="3" >3</td>
+					<td> - </td>
+					<td df="2" >2</td>
 				</tr>
 				<tr id="SHU" tmId="15">
 					<th>Sheffield Utd</th>
-					<td></td>
-					<td></td>
+					<td df="3" >3</td>
+					<td> - </td>
+					<td df="3" >3</td>
 				</tr>
 				<tr id="SOU" tmId="16">
 					<th>Southampton</th>
-					<td></td>
-					<td></td>
+					<td df="3" >3</td>
+					<td> - </td>
+					<td df="3" >3</td>
 				</tr>
 				<tr id="TOT" tmId="17">
 					<th>Spurs</th>
-					<td></td>
-					<td></td>
+					<td df="4" >4</td>
+					<td> - </td>
+					<td df="3" >3</td>
 				</tr>
 				<tr id="WBA" tmId="18">
 					<th>West Brom</th>
-					<td></td>
-					<td></td>
+					<td df="2" >2</td>
+					<td> - </td>
+					<td df="2" >2</td>
 				</tr>
 				<tr id="WHU" tmId="19">
 					<th>West Ham</th>
-					<td></td>
-					<td></td>
+					<td df="4" >4</td>
+					<td> - </td>
+					<td df="2" >2</td>
 				</tr>
 				<tr id="WOL" tmId="20">
 					<th>Wolves</th>
-					<td></td>
-					<td></td>
+					<td df="3" >3</td>
+					<td> - </td>
+					<td df="3" >3</td>
 				</tr>
 			</tbody>			
 		</table>
+	
 	</div>
-
-	<script src="getMatchInfo.js"></script>
  </body>
  </html>

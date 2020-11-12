@@ -57,15 +57,134 @@ let ppEevents   =   [
 
 
 /*  Array to store the event data from FPL */
-let FPLData = [];
 let FPL_TD = [ 
                 {   
                     "tmId": 0,
                     "tmNm": "Team",
-                    "tmHm": 0,
-                    "tmAw": 0
+                    "tmHm": 0, /* This is how difficult ia this team at Home */
+                    "tmAw": 0 /* This is how difficult ia this team Away */
                 },
-                {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{} ];
+                {   
+                    "tmId": 1,
+                    "tmNm": "ARS",
+                    "tmHm": 4,
+                    "tmAw": 3
+                },
+                {   
+                    "tmId": 2,
+                    "tmNm": "AVL",
+                    "tmHm": 3,
+                    "tmAw": 2
+                },
+                {   
+                    "tmId": 3,
+                    "tmNm": "BHA",
+                    "tmHm": 3,
+                    "tmAw": 2
+                },
+                {   
+                    "tmId": 4,
+                    "tmNm": "BUR",
+                    "tmHm": 3,
+                    "tmAw": 2
+                },
+                {   
+                    "tmId": 5,
+                    "tmNm": "CHE",
+                    "tmHm": 4,
+                    "tmAw": 3
+                },
+                {   
+                    "tmId": 6,
+                    "tmNm": "CRY",
+                    "tmHm": 3,
+                    "tmAw": 2
+                },
+                {   
+                    "tmId": 7,
+                    "tmNm": "EVE",
+                    "tmHm": 3,
+                    "tmAw": 2
+                },
+                {   
+                    "tmId": 8,
+                    "tmNm": "FUL",
+                    "tmHm": 2,
+                    "tmAw": 2
+                },
+                {   
+                    "tmId": 9,
+                    "tmNm": "LEI",
+                    "tmHm": 4,
+                    "tmAw": 3
+                },
+                {   
+                    "tmId": 10,
+                    "tmNm": "LEE",
+                    "tmHm": 3,
+                    "tmAw": 2
+                },
+                {   
+                    "tmId": 11,
+                    "tmNm": "LIV",
+                    "tmHm": 5,
+                    "tmAw": 4
+                },
+                {   
+                    "tmId": 12,
+                    "tmNm": "MNC",
+                    "tmHm": 5,
+                    "tmAw": 4
+                },
+                {   
+                    "tmId": 13,
+                    "tmNm": "MUN",
+                    "tmHm": 4,
+                    "tmAw": 4
+                },
+                {   
+                    "tmId": 14,
+                    "tmNm": "NEW",
+                    "tmHm": 3,
+                    "tmAw": 2
+                },
+                {   
+                    "tmId": 15,
+                    "tmNm": "SHU",
+                    "tmHm": 3,
+                    "tmAw": 3
+                },
+                {   
+                    "tmId": 16,
+                    "tmNm": "SOU",
+                    "tmHm": 3,
+                    "tmAw": 3
+                },
+                {   
+                    "tmId": 17,
+                    "tmNm": "TOT",
+                    "tmHm": 4,
+                    "tmAw": 3
+                },
+                {   
+                    "tmId": 18,
+                    "tmNm": "WBA",
+                    "tmHm": 2,
+                    "tmAw": 2
+                },
+                {   
+                    "tmId": 19,
+                    "tmNm": "WHU",
+                    "tmHm": 4,
+                    "tmAw": 2
+                },
+                {   
+                    "tmId": 20,
+                    "tmNm": "WOL",
+                    "tmHm": 3,
+                    "tmAw": 3
+                }
+ ];
 
 function loadDoc() {
     /* Get the data from FPL thru CORS evasion site and save data */
@@ -83,7 +202,10 @@ function loadDoc() {
 
                 arrB4Sort[ev].team_h_nm = FPLTeams[arrB4Sort[ev].team_h];
                 arrB4Sort[ev].team_a_nm = FPLTeams[arrB4Sort[ev].team_a];
+                arrB4Sort[ev].ev_df_df = cmp_OppDF(  arrB4Sort[ev] )
 
+                printMatch(arrB4Sort[ev])
+                
                 let evId = arrB4Sort[ev].id; 
                     
                         if( evId == 379 ) {
@@ -133,7 +255,22 @@ function loadDoc() {
     xhttp.send();
 }
 
+
+function printMatch(fplGame){
+    let slctdTm = 9
+    if( fplGame.team_h == slctdTm ){
+        console.log(fplGame.id, FPLTeams[slctdTm], " (", fplGame.team_h_difficulty, ") v", FPLTeams[fplGame.team_a], " (", fplGame.team_a_difficulty, ")" )
+    }
+}
+
+
+
 loadDoc();
+
+/* 
+tab controls
+*/
+let ActiveTabNumber = 0;
 
 function showEvent(id){
     for(let e=0; e< FPLData.length; e++){ if( FPLData[e].id == id ){ return FPLData[e]; }}
@@ -186,7 +323,7 @@ function getAllTeams(rndCnt) {
     for (let t = 1; t < 21; t++) { getTeams(t, rndCnt); }
     console.log("marking postponed..", markPostponed() )
     console.log("hiding played games..", hidePastEvents() )
-   // console.log("fillTmDFTable..", fillTmDFTable() )
+    console.log("fillTmDFTable..", fillTmDFTable() )
 }
 
 function hidePastEvents(){
@@ -220,21 +357,16 @@ function markPostponed(){
 
 function fltrFPLData(dataArr, tmId){
     let retResArr = [];
-    console.log("fltrFPLData","tmId", tmId, dataArr.length )
+    console.log("fltrFPLData", dataArr.length , "tmId", tmId );
 
-    retResArr = dataArr.filter(
-        function (a) {
-            let A = a.team_h;
-            let B = a.team_a;
-                // console.log( "comparing events:", a.id, "and ", b.id );
-                if ( (parseInt(A)==parseInt(tmId)) || (parseInt(B)==parseInt(tmId)) ) 
-                    { return 1; }
-                else
-                    { return -1; }
-        }
-    );
-
-    console.log("dataArr after filter: ", retResArr.length )
+    for (let d=0; d < dataArr.length; d++) {
+        let A = dataArr[d].team_h == tmId ;
+        let B = dataArr[d].team_a == tmId ;
+            // console.log( "comparing events:", a.id, "and ", b.id );
+            if ( A || B ){ retResArr.push(dataArr[d]); }
+    }
+ 
+    // console.log("dataArr after filter: ", retResArr.length )
     return retResArr;
 }
 
@@ -260,56 +392,66 @@ function getTeams(tmId, rnds) {
             let rndSelected = ((event.event > rndsPlayed) && (event.event <= (rndsPlayed + rnds)));
             // console.log("event.event",event.event ,"rndsPlayed",rndsPlayed , "rnds", rnds, ' rndSelected', rndSelected)
             // console.log("rndSelected = ", rndSelected )
+            let eventAdded = false;
 
             if (event.team_h == tmId) { /* selected team is playing at Home */
-
+                
+                eventAdded = true
+                
+                /*
                 console.log(
                     "getTeams_FPLData: event.team_h:", 
-                    tmId, "nm:", FPLTeams[tmId],"rnds:", rnds);
+                    tmId, "nm:", FPLTeams[tmId],"rnd:", event.event
+                );
+                */
 
-                if (rndSelected) { ttlDF += event.team_h_difficulty; }
+                if (rndSelected) { ttlDF += FPL_TD[event.team_a].tmAw; }
 
                 FPL_TD[tmId].tmId = tmId;
                 FPL_TD[tmId].tmNm = FPLTeams[tmId],
-                FPL_TD[tmId].tmHm = event.team_h_difficulty;
+                // FPL_TD[tmId].tmHm = event.team_h_difficulty;
 
                 OppList.push({ 
                     "eventId": event.id ,
                     "evround": event.event,
                     "loc": "H", 
                     "curTmId": event.team_h,
-                    "Hdfc": event.team_h_difficulty, 
                     "opp": event.team_a, 
+                    "dfc": FPL_TD[event.team_a].tmAw, 
                     "OpNm": FPLTeams[event.team_a], 
-                    "dfc": event.team_a_difficulty, 
                     "plyd": event.finished, 
                     "inSel": rndSelected
                 });
-            } else if (event.team_a == tmId) { /* selected team is playing Away */
-                if (rndSelected) { ttlDF += event.team_a_difficulty; }
+            } else if (event.team_a == tmId) {
+                /* selected team is playing Away */
+                eventAdded = true;
+
+                if (rndSelected) { ttlDF += FPL_TD[event.team_h].tmHm; }
+
                 FPL_TD[tmId].tmId = tmId;
                 FPL_TD[tmId].tmNm = FPLTeams[tmId],
-                FPL_TD[tmId].tmAw = event.team_a_difficulty;
+                // FPL_TD[tmId].tmAw = event.team_a_difficulty;
 
                 OppList.push({ 
                     "eventId": event.id ,
                     "evround": event.event,
                     "loc": "A", 
                     "curTmId": event.team_a,
-                    "Hdfc": event.team_a_difficulty, 
                     "opp": event.team_h, 
+                    "dfc": FPL_TD[event.team_h].tmHm, 
                     "OpNm": FPLTeams[event.team_h], 
-                    "dfc": event.team_h_difficulty, 
                     "plyd": event.finished, 
                     "inSel": rndSelected
                 });
             }
+
+            // if ( eventAdded == true ){ console.log(i, "OppList", OppList) }
         }
 
     }
 
     /* clear earlier selections */
-    $("#" + FPLTeams[tmId] + " > td").remove();
+    $(".DF_overview #" + FPLTeams[tmId] + " > td").remove();
 
     /* Add td with sum of selected games difficulty factor/coefficient */
     $("<td class='dfc'>" + ttlDF + "</td>").appendTo("#" + FPLTeams[tmId]);
@@ -317,27 +459,25 @@ function getTeams(tmId, rnds) {
     /* Add all selected games to the team row after diff. factor */
     jQuery.each(OppList, function (i, val) {
         let evntClassList = ["evtTeamBlock"];
-    	/* hide cell if round has been played */
+        /* hide cell if round has been played */
+        
         if( val.plyd ) { evntClassList.push( "played" ); } 
+        
         $(
             "<td class='"   + evntClassList.join(" ") + 
             "' loc="        + val.loc + 
-            " df="          + val.Hdfc + 
             " plyd="        + val.plyd + 
             " inSel="       + val.inSel + 
             " evId="        + val.eventId +   
             " evRnd="       + val.evround +
-            " evCtmID="     + val.curTmId +
             " evOtmID="     + val.opp +
-            " title='"       + val.eventId + 
+            " title='"      + val.eventId + 
             ": "            + val.OpNm + 
-            " df="          + val.Hdfc +
+            " df="          + val.dfc +
             " ("            + val.loc + 
             ")' >"    /*      + val.evround + 
             ": "       */     + val.OpNm + 
-            " ("            + val.loc + 
-            ") " 		+ val.dfc +
-		"</td>"
+            " ("            + val.loc + " - " + val.dfc + ")</td>"
         ).appendTo("#" + FPLTeams[tmId]);
     });
 
@@ -360,10 +500,28 @@ function rndFltrFnc(arrVal) { return ( parseInt(arrVal.event) === eventRndFltrVa
 function pstpndRndFltrFnc(arrVal) { return ( arrVal.event === 0 ); }
 
 function fillTmDFTable(){
-    let targetTable = $(".tm_df_tbl")
-    console.log("FPL_TD", FPL_TD)
+    console.log("fillTmDFTable GMI.js")
+    for (let t = 1; t < 21; t++) {  
+        let dfTeam      = FPL_TD[t]
 
-//         for (let t = 1; t < 21; t++) {  let targetRow   = targetTable.row(t+1) }
+        // $( "#tm_df_tbl tr[tmid='1']" ).length
+
+        /* clear earlier selections */
+
+        // console.log("fillTmDFTable-dfTeam", dfTeam, "targetRow", targetRow.length)
+
+        $(
+            "<td class='"   + "df_hm"       + 
+            "' df="         + dfTeam.tmHm   + 
+            ">"             + dfTeam.tmHm   + 
+            "</td><td> - </td>" +
+            "<td class='"   + "df_aw"       + 
+            "' df="         + dfTeam.tmAw   + 
+            ">"             + dfTeam.tmAw   + 
+            "</td>"
+        ).appendTo(targetRow);
+
+    }
 }
 
 

@@ -1,7 +1,7 @@
 body{
 
-    background-color: black;
-    color: bisque;
+    background-color: #000000;
+    color: #FFFFF2;
 }
 
 table{
@@ -19,31 +19,40 @@ th:nth-of-type(even){
 }
 
 td{
-    color: #000000;
+    color: #ffffff;
 }
 
-tr>td:first-of-type{
-    color: #ebebe4;
-}
-tr>td:nth-of-type(2){
-    color: #000000;
-}
-
+/*
 td[df="2"]{
     background-color: #00ff86;
+    color: #000000;
 }
 
 td[df="3"]{
-    background-color: #ff751a;
+    background-color: #ebebe4;
+    color: #000000;
 }
 
 td[df="4"]{
     background-color: #ff005a;
+    color: #FFFFFF;
 }
 
 td[df="5"]{
     background-color: #861d46;
+    color: #FFFFFF;
 }
+
+td[ev_df_df="1"]{
+    color: #0000FF;
+    background-color: #ADADAD;    
+}
+
+td[ev_df_df="2"]{
+    color: #000FFF;
+    background-color: #000DAD;    
+}
+*/
 
 td[plyd="true"]{
     background-color: #000000 !important;
@@ -53,6 +62,14 @@ td[plyd="true"]{
 td[inSel="false"]{
     background-color: #494936 !important;
     color: #585858 !important;
+}
+
+.dfc{
+    color: #FFFFFF;
+}
+
+#tm_df_tbl{
+    color: #FFFFFF !important;
 }
 
 .curRound{
@@ -99,4 +116,29 @@ td[inSel="false"]{
 
 .notModal{
     display: none;
+}
+
+
+li {
+  display: inline;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  display: block;
+  padding: 8px;
+  background-color: #dddddd;
+}
+
+.tabHidden{
+    display: none;
+}
+
+.tabShow{
+    display: block;
 }
