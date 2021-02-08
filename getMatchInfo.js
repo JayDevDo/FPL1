@@ -249,7 +249,9 @@ function loadDoc() {
         xhttp.open("GET", localJsonFile, true);
     }else{
       // served github
-        xhttp.open("GET", cors_api_url + json_string, true);
+      //  xhttp.open("GET", cors_api_url + json_string, true);
+	console.log("served github. data from ", localJsonFile)
+        xhttp.open("GET", localJsonFile, true);    
     }
 
     xhttp.send();
